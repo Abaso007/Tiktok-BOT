@@ -7,7 +7,7 @@ This Tiktok BOT Tools Kit
 
 <a href="https://github.com/tahaluindo"><img src="https://i.ibb.co/7jRD1tj/images-31.jpg" alt="images-31" border="0"></a>
 
-- Tiktok BOT Berbasis Python + Chrome Driver
+- Tiktok BOT Berbasis Python3 + Chrome Driver
 
 # Cara Pasang Installer
 
@@ -16,6 +16,8 @@ This Tiktok BOT Tools Kit
 - git clone https://github.com/tahaluindo/Tiktok-BOT
 
 - cd Tiktok-BOT
+
+- pip install selenium --upgrade
 
 - python main.py
 
