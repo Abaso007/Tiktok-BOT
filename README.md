@@ -25,6 +25,8 @@ This Tiktok BOT Tools Kit
 
 - Jika Tidak Work Lapor Ke Issue
 
+- Add Massreporting Akun Tiktok 
+
 # Support By
 
 - Android On RDP 👍
