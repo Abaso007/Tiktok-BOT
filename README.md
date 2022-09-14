@@ -17,6 +17,8 @@ This Tiktok BOT Tools Kit
 
 - cd Tiktok-BOT
 
+- pip install -r requirements.txt
+
 - pip install selenium --upgrade
 
 - python main.py
