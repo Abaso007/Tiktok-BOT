@@ -21,10 +21,7 @@ def color(str, color):
 
 def align(str):
     lines = str.splitlines( )
-    greatest = []
-    for i in lines:  
-        greatest.append(len(i))
-
+    greatest = [len(i) for i in lines]
     for i in lines:
         length = round(int(greatest[-1])/2)
         print(f"{' '*round(get_terminal_size().columns/2-length)}{i}")
@@ -112,7 +109,7 @@ def start(video, botChoice):
 
     option = webdriver.ChromeOptions()
     option.add_experimental_option('excludeSwitches', ['enable-logging'])
-    
+
     try:
         service = Service(executable_path="C:\\Users\\YOUR\\PATH\\HERE\\chromedriver.exe")
         driver = webdriver.Chrome(service=service, options=option)
@@ -122,7 +119,7 @@ def start(video, botChoice):
         exit()
 
     driver.get("https://zefoy.com")
-    
+
     if driver.title == "zefoy.com | 502: Bad gateway":
             print(f"{color('>', 'red')} Zefoy Is Down... Attempting To Fix.\n")
             while driver.title == "zefoy.com | 502: Bad gateway":
@@ -133,12 +130,12 @@ def start(video, botChoice):
                     break
     else:
         print(f"\n{color('>', 'green')} Zefoy Is Up!\n")
-    
+
     captchaCheck = input(f"{color('>>>', 'green')} Type \"y\" Once You Finished The Captcha: {Fore.LIGHTMAGENTA_EX}")
     captchaFinish = False
 
     if captchaCheck == "y":
-        while captchaFinish != True:
+        while not captchaFinish:
             try:
                 driver.find_element(By.XPATH, "/html/body/div[4]/div[1]/div[3]/div/div[1]/div/h5")
                 captchaFinish = True
@@ -165,7 +162,7 @@ def start(video, botChoice):
             second2 += 1
             if cooldown[second2] == "s":
                 break
-        
+
         #Returning Minutes & Second Added
         return (int(cooldown[minute1:minute2])*60) + int(cooldown[second1:second2])
 
@@ -245,7 +242,7 @@ def start(video, botChoice):
                 print(f"\n{color('>', 'red')} {which} Page is Down on Zefoy.")
                 print(f"{color('>', 'red')} Stopped.")
                 time.sleep(1000000)
-            if con1 == True:
+            if con1:
                 time.sleep(2)
                 driver.find_element(By.XPATH, search).click()
                 time.sleep(3)
@@ -258,14 +255,9 @@ def start(video, botChoice):
                     print(f"{color('>', 'red')} {which} Cool Down Isn't Finished, Getting Cool Down.\n")
                     time.sleep(5)
                     cooldownTime += findCooldown(cooldownText)
-                if con2 == True:
+                if con2:
                     time.sleep(5)
                     cooldownTime += findCooldown(cooldownText)
-                else:
-                    pass
-            else:
-                pass
-
             amount += 1
             driver.find_element(By.XPATH, home).click()
             print(f"{color('>', 'green')} Completed {Fore.LIGHTCYAN_EX}{amount} {Fore.LIGHTGREEN_EX}Time.")
@@ -309,7 +301,7 @@ def start(video, botChoice):
                         continue1 = False
                         driver.find_element(By.XPATH, home)
 
-                    if continue1 == True:
+                    if continue1:
                         time.sleep(2)
                         driver.find_element(By.XPATH, i[2]).click()
                         time.sleep(3)
@@ -325,15 +317,10 @@ def start(video, botChoice):
                             driver.find_element(By.XPATH, home).click()
                             continue2 = False
 
-                        if continue2 == True:
+                        if continue2:
                             time.sleep(5)
                             cooldownList.append(findCooldown(i[4]))
                             driver.refresh()
-                    else:
-                        pass
-                else:
-                    pass
-                
                 amount +=1
                 cooldownList.sort()
 

@@ -11,10 +11,7 @@ init(convert = True, autoreset = True)
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 os.system("mode con cols=88 lines=25")
 
-clear = "clear"
-if platform.system() == "Windows":
-    clear = "cls"
-
+clear = "cls" if platform.system() == "Windows" else "clear"
 os.system(clear)
 
 ascii_text = """
@@ -74,9 +71,7 @@ class automator:
             time.sleep(1)
 
     def console_msg(self, status):
-        colour = Fore.RED
-        if status == "Success":
-            colour = Fore.GREEN
+        colour = Fore.GREEN if status == "Success" else Fore.RED
         return f"                {Fore.WHITE}[{colour}{status}{Fore.WHITE}]"
     
     def update_ascii(self):
@@ -89,22 +84,13 @@ class automator:
         return ascii_text + options
     
     def check_url(self, url):
-        redirect = True
-        if "vm.tiktok.com/" in url:
-            redirect = False
+        redirect = "vm.tiktok.com/" not in url
         if redirect:
             if "/video/" not in url:
                 return False
         session = requests.Session()
         r = session.get(url, allow_redirects=redirect)
-        if redirect:
-            if r.status_code == 200:
-                return True
-            return False
-        location = r.headers["Location"]
-        if "/video" in location:
-            return True
-        return False
+        return r.status_code == 200 if redirect else "/video" in r.headers["Location"]
 
     def convert(self, min, sec):
         seconds = 0
@@ -147,7 +133,7 @@ class automator:
         duration, output = self.check_submit(div)
         if duration == True:
             return
-        if output == None:
+        if output is None:
             time.sleep(0.7)
             self.wait_for_ratelimit(arg, div)
         self.cooldowns += 1
@@ -185,10 +171,10 @@ class automator:
                         sent = int(s.text.split(" Hearts")[0])
                     except IndexError:
                         sent = 30
-                if bot == "views":
-                    sent = 2500
                 if bot == "shares":
                     sent = 500
+                elif bot == "views":
+                    sent = 2500
                 self.sent += sent
             else:
                 print(s.text)
@@ -203,15 +189,19 @@ class automator:
             os.system(clear)
             ctypes.windll.kernel32.SetConsoleTitleW(f"TokView V2 | Sent: {self.sent} | Cooldown: {remaining}s | Developed by @DaniEnsi on Github")
             print(ascii_text)
-            print(self.console_msg(self.sent) + f" Sent {bot}")
+            print(f"{self.console_msg(self.sent)} Sent {bot}")
             rl_cooldown = "0"
             cooldown = "0"
             if rl:
                 rl_cooldown = remaining
             else:
                 cooldown = remaining
-            print(self.console_msg(self.cooldowns) + f" Cooldowns {Fore.WHITE}[{Fore.RED}{cooldown}s{Fore.WHITE}]")
-            print(self.console_msg(self.ratelimits) + f" Ratelimits {Fore.WHITE}[{Fore.RED}{rl_cooldown}s{Fore.WHITE}]")
+            print(
+                f"{self.console_msg(self.cooldowns)} Cooldowns {Fore.WHITE}[{Fore.RED}{cooldown}s{Fore.WHITE}]"
+            )
+            print(
+                f"{self.console_msg(self.ratelimits)} Ratelimits {Fore.WHITE}[{Fore.RED}{rl_cooldown}s{Fore.WHITE}]"
+            )
 
     def main(self):
         if clear == "cls":
@@ -244,10 +234,10 @@ class automator:
         if option == 1:
             if self.status["followers"] != "":
                 return self.start()
-            div = 2
-            ver = "followers"
             username = str(input(f"\n{self.console_msg('Console')} TikTok Username: @"))
             print()
+            div = 2
+            ver = "followers"
             self.send_bot(username, ver, div)
             return
         elif option == 2:
@@ -269,10 +259,10 @@ class automator:
             return self.start()
         video_url = str(input(f"\n{self.console_msg('Console')} Video URL: "))
         print()
-        check = self.check_url(video_url)
-        if not check:
+        if check := self.check_url(video_url):
+            self.send_bot(video_url, ver, div)
+        else:
             return self.error("This URL does not exist.")
-        self.send_bot(video_url, ver, div)
 
 obj = automator()
 obj.main()
