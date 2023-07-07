@@ -61,15 +61,14 @@ class Main:
                     if os.name == "nt"
                     else ""
                 )
-                pass
     def solve_captcha(self, sessid):
         try:
             # -- get captcha image --
             response = self.session.get(
-                self.url + "a1ef290e2636bf553f39817628b6ca49.php",
+                f"{self.url}a1ef290e2636bf553f39817628b6ca49.php",
                 headers={
                     "origin": "https://zefoy.com",
-                    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36",   
+                    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36",
                     "x-requested-with": "XMLHttpRequest",
                     "cookie": f"PHPSESSID={sessid}",
                 },
@@ -103,15 +102,6 @@ class Main:
                 self.solve_captcha(sessid)
             captcha_answer = re.compile('[^a-zA-Z]').sub('', captcha_answer).lower()
 
-                # d = enchant.Dict("en_US")
-                # if d.check(captcha_answer) == True:
-                #     pass
-                # else:
-                #     try:
-                #         captcha_answer = d.suggest(captcha_answer)[0]
-                #     except:
-                #         self.solve_captcha(sessid)
-
             _response = self.session.post(
                 self.url,
                 data={
@@ -138,15 +128,14 @@ class Main:
             )
             self.solve_captcha(sessid)
     def get_sessid(self):
-        sessid = self.session.get(
+        return self.session.get(
             self.url,
             headers={
                 "origin": "https://zefoy.com",
-                "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36",       
+                "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36",
                 "x-requested-with": "XMLHttpRequest",
             },
         ).cookies.values()[0]
-        return sessid
     def decrypt(self, data):
         return base64.b64decode(urllib.parse.unquote(data[::-1])).decode()
     def decrypt_timer(self, data):
@@ -163,14 +152,16 @@ class Main:
                 aweme_id = self.videos
 
                 request = self.session.post(
-                    self.url + "c2VuZC9mb2xsb3dlcnNfdGlrdG9V",
+                    f"{self.url}c2VuZC9mb2xsb3dlcnNfdGlrdG9V",
                     headers={
                         "cookie": f"PHPSESSID={sessid}",
                         "origin": "https://zefoy.com",
                         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36",
                         "x-requested-with": "XMLHttpRequest",
                     },
-                    data={alpha_key: f"https://www.tiktok.com/@onlp/video/{aweme_id}"},
+                    data={
+                        alpha_key: f"https://www.tiktok.com/@onlp/video/{aweme_id}"
+                    },
                 )
                 decryped_answer = self.decrypt(request.text)
 
@@ -196,12 +187,12 @@ class Main:
                 try:
                     beta_key = soup.find("input", {"type": "text"}).get("name")
                 except:
-                    os.system("python " + sys.argv[0])
+                    os.system(f"python {sys.argv[0]}")
                     sys.exit(0)
                 time.sleep(1)
                 start = time.time()
                 send_views = requests.post(
-                    self.url + "c2VuZC9mb2xsb3dlcnNfdGlrdG9V",
+                    f"{self.url}c2VuZC9mb2xsb3dlcnNfdGlrdG9V",
                     headers={
                         "cookie": f"PHPSESSID={sessid}",
                         "origin": "https://zefoy.com",
@@ -226,7 +217,7 @@ class Main:
                     print(self.format(" ヘ（。□°）ヘ  ",f" Date: {round((start + timer) - time.time())}     "), end="\r")
                     time.sleep(1)
             except:
-                os.system("python " + sys.argv[0])
+                os.system(f"python {sys.argv[0]}")
                 sys.exit(0)
     def main(self):
         threading.Thread(

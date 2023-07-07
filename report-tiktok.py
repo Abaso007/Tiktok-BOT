@@ -6,11 +6,11 @@ try:
     import httpx, asyncio, tasksio, random, threading, pystyle, cursor, time, sys
 except:
     z = "python -m pip install "
-    os.system("%shttpx" % (z))
-    os.system("%sasyncio" % (z))
-    os.system("%stasksio" % (z))
-    os.system("%spystyle" % (z))
-    os.system("%scursor" % (z))
+    os.system(f"{z}httpx")
+    os.system(f"{z}asyncio")
+    os.system(f"{z}tasksio")
+    os.system(f"{z}pystyle")
+    os.system(f"{z}cursor")
 
 
 
@@ -44,19 +44,18 @@ class TikTok:
             pystyle.Colors.blue_to_cyan,
             interval=0.0025,
         )
-        if str(self.report_type) not in ("317", "9010", "90031"):
+        if str(self.report_type) not in {"317", "9010", "90031"}:
             return print(
                 pystyle.Colorate.Horizontal(
-                    pystyle.Colors.blue_to_cyan, f" [ ! ] Invalid Report Type.", 1
+                    pystyle.Colors.blue_to_cyan, " [ ! ] Invalid Report Type.", 1
                 )
             )
-        else:
-            self.report_reason = str(self.report_type)
-            print(
-                pystyle.Colorate.Horizontal(
-                    pystyle.Colors.blue_to_cyan, f"\n [ * ] Sending Reports...\n", 1
-                )
+        self.report_reason = str(self.report_type)
+        print(
+            pystyle.Colorate.Horizontal(
+                pystyle.Colors.blue_to_cyan, f"\n [ * ] Sending Reports...\n", 1
             )
+        )
 
         self.user_id = ""
         self.secuid = ""
@@ -86,8 +85,7 @@ class TikTok:
                 "Cookie": "msToken=zgbEqIjfSC7M7QdTTpHDkpWLtnY4JnK22HiSE1iHCRGBBYY_36Gm-gMDqyGLBjpPE2svzjVPNGWyMFYUUEBwmGkr5y2qQuKmfjfTh0i2hfOsb_B7jfDrbd9a4IhjMLPyUIRNIZLqzG6PldNNXA==",
             }
             DATA = client.get(
-                "https://www.tiktok.com/api/user/detail/?device_id=7098862702289995269&uniqueId=%s"
-                % (self.username)
+                f"https://www.tiktok.com/api/user/detail/?device_id=7098862702289995269&uniqueId={self.username}"
             ).json()["userInfo"]["user"]
 
             self.user_id = DATA["id"]
@@ -100,7 +98,7 @@ class TikTok:
         threading.Thread(target=self.title).start()
         while True:
             async with tasksio.TaskPool(workers=1_000) as pool:
-                for x in range(1_000):
+                for _ in range(1_000):
                     await pool.put(self.report())
 
     async def report(self):
